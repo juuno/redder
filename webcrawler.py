@@ -9,11 +9,7 @@ import requests
 import re
 
 
-def getTopPosts():
-    r = requests.get()
-
-
-def getUser(*user, **params):
+def getUserPage(*user, **params):
     """ Get user page in requests query format """
 
     # Make sure input is in right format
@@ -41,14 +37,9 @@ def getComments(r):
     """
 
     # Get all div elements that correspond to comments
-    #strlist = re.split('<div', r.text )
     strlist = re.split('noncollapsed', r.text )
-    #indices = [i for i,x in enumerate(divlist) if re.search('noncollapsed',x) ]
-    #jindices = [i for i,x in enumerate(divlist) if re.search('class="md"',x) ]
 
     commentData = []
-    #print( len(indices))
-    #print( len(jindices))
     
     for splitpart in strlist[1:]:
         
@@ -65,7 +56,8 @@ def getComments(r):
         ctext = re.split(' class="md">',splitpart)
         ctext = re.split('</div>',ctext[1])
         ctext = ctext[0]
-        
+
+        # Save data to dictionary
         commentData = commentData + [{'id':thing_id, 'permalink':permalink, 'text':ctext}]
 
     return commentData
